@@ -13,7 +13,7 @@ app.set('view engine', 'ejs')
 app.use(express.static('public'));
 
 app.get('/', function (req, res) {
-    res.render('index')
+    res.render('index',{iftarText: null, error:null})
 })
 
 app.listen(params.portnumber, function () {
@@ -25,16 +25,17 @@ app.post('/', function (req, res) {
     let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
     request(url, function (err, response, body) {
         if (err) {
-            res.render('index', { weather: null, error: 'Servise ulaşılamadı. Tekrar deneyin.' });
+            res.render('index', { iftarText: null, error: 'Servise ulaşılamadı. Tekrar deneyin.' });
         } else {
             let weather = JSON.parse(body)
             let sunset = weather.sys.sunset * 1000;
             // console.log(weather);
             if (weather.main == undefined) {
-                res.render('index', { weather: null, error: 'Şehir bulunamadı. Tekrar deneyin.' });
+                res.render('index', { iftarText: null, error: 'Şehir bulunamadı. Tekrar deneyin.' });
             } else {
+                let iftarText = prepareIftarText(weather);
                 res.render('index', {
-                    weather: processSunsetText(weather),
+                    iftarText: iftarText,
                     error: null
                 })
                 /*
@@ -47,7 +48,7 @@ app.post('/', function (req, res) {
     });
 })
 
-function processSunsetText(weather) {
+function prepareIftarText(weather) {
     let curr = Date.now();
     let sunset = weather.sys.sunset * 1000;
     let time = (curr - sunset) / 1000;
