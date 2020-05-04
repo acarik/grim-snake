@@ -16,8 +16,8 @@ app.get('/', function (req, res) {
     res.render('index',{iftarText: null, error:null})
 })
 
-app.listen(params.portnumber, function () {
-    console.log('Example app listening on port ' + params.portnumber.toString() + '!')
+app.listen(process.env.PORT || params.portnumber, function () {
+    console.log('Example app listening on port ' + process.env.PORT || params.portnumber.toString() + '!')
 })
 
 app.post('/', function (req, res) {
