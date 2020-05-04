@@ -1,0 +1,10 @@
+git init
+git config --global user.email "acarik@msn.com"
+git config --global user.name "Ali Can ARIK"
+git commit -m "first commit"
+git remote add origin https://github.com/acarik/grim-snake.git
+git push --set-upstream origin master
+
+git add .
+git commit -m "procfile added"
+git push --set-upstream origin master
